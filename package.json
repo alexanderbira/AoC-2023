@@ -1,0 +1,11 @@
+{
+  "name": "aoc-2023",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "JS solutions for the Advent of Code 2023 problems",
+  "author": "alexanderbira",
+  "license": "ISC",
+  "scripts": {
+    "run": "node run.js"
+  }
+}
