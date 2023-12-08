@@ -10,7 +10,7 @@ graph = Object.fromEntries(
     .map(n => [n[0], [n[1].slice(1,4), n[1].slice(6, 9)]])
 );
 
-var gcd = (a, b) => b===0 ? a : gcd(b, a % b);
+const gcd = (a, b) => b===0 ? a : gcd(b, a % b);
 
 
 let currNode = "AAA";
