@@ -40,14 +40,10 @@ for (let y = 0; y < grid.length; y++) {
 
       adjacenciesU[`${y},${x}`][`${newY},${newX}`] = 1;
 
-      if (grid[newY][newX] !== ".") {
-        if (grid[newY][newX] === ">") {
-          if (direction !== "R") continue;
-        }
-        if (grid[newY][newX] === "v") {
-          if (direction !== "D") continue;
-        }
-      }
+      if (
+        grid[newY][newX] === ">" && direction !== "R" ||
+        grid[newY][newX] === "v" && direction !== "D"
+      ) continue;
 
       adjacenciesD[`${y},${x}`][`${newY},${newX}`] = 1;
     }
@@ -85,22 +81,25 @@ for (const coord in adjacenciesU) {
   }
 }
 
-function getLongestPath(graph, coord, visited, dist) {
-  if (coord === endCoord) return dist
+const visited = new Set().add("0,1");
 
-  let longest = 0;
+const getLongestPath = (graph, coord, distance) =>
+  coord === endCoord ?
+    distance :
+    Object.keys(graph[coord])
+      .reduce((longest, neighbour) => {
+        if (visited.has(neighbour)) return longest;
 
-  for (const neighbour in graph[coord]) {
-    if (visited.has(neighbour)) continue;
-    longest = Math.max(longest, getLongestPath(graph, neighbour, new Set(visited).add(neighbour), dist + graph[coord][neighbour]));
-  }
+        visited.add(neighbour);
+        const n = getLongestPath(
+          graph,
+          neighbour,
+          distance + graph[coord][neighbour]
+        );
+        visited.delete(neighbour);
 
-  return longest;
-}
+        return longest > n ? longest : n;
+      }, 0);
 
-let startVisited = new Set();
-startVisited.add("0,1");
-
-console.log(getLongestPath(adjacenciesD, "0,1", startVisited, 0));
-// Part 2 takes ~30 seconds
-console.log(getLongestPath(adjacenciesU, "0,1", startVisited, 0));
+console.log(getLongestPath(adjacenciesD, "0,1", 0));
+console.log(getLongestPath(adjacenciesU, "0,1", 0));
